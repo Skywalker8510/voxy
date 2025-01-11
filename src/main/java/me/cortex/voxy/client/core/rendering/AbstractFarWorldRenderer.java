@@ -14,6 +14,7 @@ import me.cortex.voxy.common.world.other.Mapper;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.Fog;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.RegistryKeys;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import static net.minecraft.client.render.FogShape.SPHERE;
 import static org.lwjgl.opengl.ARBMultiDrawIndirect.glMultiDrawElementsIndirect;
 import static org.lwjgl.opengl.GL30.*;
 
@@ -105,7 +107,7 @@ public abstract class AbstractFarWorldRenderer <T extends Viewport, J extends Ab
             //Do any BiomeChanges
             while (!this.biomeUpdates.isEmpty()) {
                 var update = this.biomeUpdates.pop();
-                var biomeReg = MinecraftClient.getInstance().world.getRegistryManager().get(RegistryKeys.BIOME);
+                var biomeReg = MinecraftClient.getInstance().world.getRegistryManager().getOptional(RegistryKeys.BIOME);
                 this.models.addBiome(update.id, biomeReg.get(Identifier.of(update.biome)));
                 didHaveBiomeChange = true;
             }
@@ -125,9 +127,7 @@ public abstract class AbstractFarWorldRenderer <T extends Viewport, J extends Ab
         }
 
         //TODO: fix this in a better way than this ungodly hacky stuff, causes clouds to dissapear
-        //RenderSystem.setShaderFogColor(1f, 1f, 1f, 0f);
-        RenderSystem.setShaderFogEnd(99999999);
-        RenderSystem.setShaderFogStart(9999999);
+        RenderSystem.setShaderFog(new Fog(9999999,99999999,SPHERE,1f,1f,1f,0f));
     }
 
     public abstract void renderFarAwayOpaque(T viewport);

@@ -50,7 +50,7 @@ public class WorldImporter {
     public WorldImporter(WorldEngine worldEngine, World mcWorld) {
         this.world = worldEngine;
 
-        var biomeRegistry = mcWorld.getRegistryManager().get(RegistryKeys.BIOME);
+        var biomeRegistry = mcWorld.getRegistryManager().getOptional(RegistryKeys.BIOME);
         var defaultBiome = biomeRegistry.entryOf(BiomeKeys.PLAINS);
         this.defaultBiomeProvider = new ReadableContainer<RegistryEntry<Biome>>() {
             @Override

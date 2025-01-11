@@ -5,7 +5,7 @@ accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 
 accessible field net/minecraft/client/texture/SpriteContents image Lnet/minecraft/client/texture/NativeImage;
 accessible field net/minecraft/client/render/Frustum frustumIntersection Lorg/joml/FrustumIntersection;
-accessible field net/minecraft/client/render/LightmapTextureManager texture Lnet/minecraft/client/texture/NativeImageBackedTexture;
+accessible field net/minecraft/client/render/LightmapTextureManager field_53098 I #I think this is right but i could be wrong -Skywalker8510
 accessible field net/minecraft/client/color/block/BlockColors providers Lnet/minecraft/util/collection/IdList;
 accessible field net/minecraft/client/render/GameRenderer zoomX F
 accessible field net/minecraft/client/render/GameRenderer zoomY F
@@ -19,5 +19,5 @@ accessible field net/minecraft/client/render/RenderLayer$MultiPhaseParameters te
 accessible field net/minecraft/client/render/RenderLayer$MultiPhase phases Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
 accessible field net/minecraft/client/network/ClientPlayerInteractionManager networkHandler Lnet/minecraft/client/network/ClientPlayNetworkHandler;
 
-accessible method net/minecraft/client/render/GameRenderer getFov (Lnet/minecraft/client/render/Camera;FZ)D
+accessible method net/minecraft/client/render/GameRenderer getFov (Lnet/minecraft/client/render/Camera;FZ)F
 accessible method net/minecraft/client/render/RenderPhase$TextureBase getId ()Ljava/util/Optional;

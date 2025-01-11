@@ -100,7 +100,7 @@ public class VoxelCore {
         ////Resave the db incase it failed a recovery
         //this.world.getMapper().forceResaveStates();
 
-        var biomeRegistry = MinecraftClient.getInstance().world.getRegistryManager().get(RegistryKeys.BIOME);
+        var biomeRegistry = MinecraftClient.getInstance().world.getRegistryManager().getOptional(RegistryKeys.BIOME);
         for (var biome : this.world.getMapper().getBiomeEntries()) {
             //this.renderer.getModelManager().addBiome(biome.id, biomeRegistry.get(new Identifier(biome.biome)));
             this.renderer.addBiome(biome);
