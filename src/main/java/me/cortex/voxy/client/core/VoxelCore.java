@@ -100,7 +100,7 @@ public class VoxelCore {
         ////Resave the db incase it failed a recovery
         //this.world.getMapper().forceResaveStates();
 
-        var biomeRegistry = MinecraftClient.getInstance().world.getRegistryManager().get(RegistryKeys.BIOME);
+        var biomeRegistry = MinecraftClient.getInstance().world.getRegistryManager().getOrThrow(RegistryKeys.BIOME);
         for (var biome : this.world.getMapper().getBiomeEntries()) {
             //this.renderer.getModelManager().addBiome(biome.id, biomeRegistry.get(new Identifier(biome.biome)));
             this.renderer.addBiome(biome);
@@ -153,7 +153,7 @@ public class VoxelCore {
         var client = MinecraftClient.getInstance();
         var gameRenderer = client.gameRenderer;//tickCounter.getTickDelta(true);
 
-        float fov = (float) gameRenderer.getFov(gameRenderer.getCamera(), client.getRenderTickCounter().getTickDelta(true), true);
+        float fov = gameRenderer.getFov(gameRenderer.getCamera(), client.getRenderTickCounter().getTickDelta(true), true);
 
         projection.setPerspective(fov * 0.01745329238474369f,
                 (float) client.getWindow().getFramebufferWidth() / (float)client.getWindow().getFramebufferHeight(),

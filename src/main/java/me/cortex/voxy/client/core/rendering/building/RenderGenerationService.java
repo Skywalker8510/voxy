@@ -88,7 +88,7 @@ public class RenderGenerationService {
                 }
             } catch (Exception e) {
                 System.err.println(e);
-                MinecraftClient.getInstance().executeSync(()->MinecraftClient.getInstance().player.sendMessage(Text.literal("Voxy render service had an exception while executing please check logs and report error")));
+                MinecraftClient.getInstance().executeSync(()->MinecraftClient.getInstance().player.sendMessage(Text.literal("Voxy render service had an exception while executing please check logs and report error"),false));
             }
         }
     }

@@ -352,7 +352,7 @@ public class ModelManager {
         if (colourProvider == null) {
             MemoryUtil.memPutInt(uploadPtr + 4, -1);//Set the default to nothing so that its faster on the gpu
         } else if (!hasBiomeColourResolver) {
-            Biome defaultBiome = MinecraftClient.getInstance().world.getRegistryManager().get(RegistryKeys.BIOME).get(BiomeKeys.PLAINS);
+            Biome defaultBiome = MinecraftClient.getInstance().world.getRegistryManager().getOrThrow(RegistryKeys.BIOME).get(BiomeKeys.PLAINS);
             MemoryUtil.memPutInt(uploadPtr + 4, captureColourConstant(colourProvider, blockState, defaultBiome)|0xFF000000);
         } else if (!this.biomes.isEmpty()) {
             //Populate the list of biomes for the model state

@@ -50,8 +50,8 @@ public class WorldImporter {
     public WorldImporter(WorldEngine worldEngine, World mcWorld) {
         this.world = worldEngine;
 
-        var biomeRegistry = mcWorld.getRegistryManager().get(RegistryKeys.BIOME);
-        var defaultBiome = biomeRegistry.entryOf(BiomeKeys.PLAINS);
+        var biomeRegistry = mcWorld.getRegistryManager().getOrThrow(RegistryKeys.BIOME);
+        var defaultBiome = biomeRegistry.getOrThrow(BiomeKeys.PLAINS);
         this.defaultBiomeProvider = new ReadableContainer<RegistryEntry<Biome>>() {
             @Override
             public RegistryEntry<Biome> get(int x, int y, int z) {
@@ -84,6 +84,11 @@ public class WorldImporter {
             }
 
             @Override
+            public PalettedContainer<RegistryEntry<Biome>> copy() {
+                return null;
+            }
+
+            @Override
             public PalettedContainer<RegistryEntry<Biome>> slice() {
                 return null;
             }
@@ -95,7 +100,7 @@ public class WorldImporter {
         };
 
         this.biomeCodec = PalettedContainer.createReadableContainerCodec(
-                biomeRegistry.getIndexedEntries(), biomeRegistry.getEntryCodec(), PalettedContainer.PaletteProvider.BIOME, biomeRegistry.entryOf(BiomeKeys.PLAINS)
+                biomeRegistry.getIndexedEntries(), biomeRegistry.getEntryCodec(), PalettedContainer.PaletteProvider.BIOME, biomeRegistry.getOrThrow(BiomeKeys.PLAINS)
         );
     }
 

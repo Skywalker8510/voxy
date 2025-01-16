@@ -87,10 +87,6 @@ layout(binding = 7, std430) readonly restrict buffer ModelColourBuffer {
     uint colourData[];
 };
 
-layout(binding = 8, std430) readonly restrict buffer LightingBuffer {
-    uint lightData[];
-};
-
 vec4 getLighting(uint index) {
     uvec4 arr = uvec4(lightData[index]);
     arr = arr>>uvec4(16,8,0,24);

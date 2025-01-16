@@ -11,24 +11,19 @@ import me.cortex.voxy.client.core.rendering.building.BuiltSection;
 import me.cortex.voxy.client.core.rendering.util.DownloadStream;
 import me.cortex.voxy.client.core.rendering.util.UploadStream;
 import me.cortex.voxy.common.world.other.Mapper;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.Fog;
 import net.minecraft.client.render.Frustum;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import org.joml.FrustumIntersection;
-import org.joml.Matrix4f;
-import org.lwjgl.system.MemoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import static org.lwjgl.opengl.ARBMultiDrawIndirect.glMultiDrawElementsIndirect;
+import static net.minecraft.client.render.FogShape.SPHERE;
 import static org.lwjgl.opengl.GL30.*;
 
 //can make it so that register the key of the sections we have rendered, then when a section changes and is registered,
@@ -85,17 +80,17 @@ public abstract class AbstractFarWorldRenderer <T extends Viewport, J extends Ab
         DownloadStream.INSTANCE.tick();
 
         //Update the lightmap
-        {
-            long upload = UploadStream.INSTANCE.upload(this.lightDataBuffer, 0, 256*4);
-            var lmt = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().texture.getImage();
-            for (int light = 0; light < 256; light++) {
-                int x = light&0xF;
-                int y = ((light>>4)&0xF);
-                int sample = lmt.getColor(x,y);
-                sample = ((sample&0xFF0000)>>16)|(sample&0xFF00)|((sample&0xFF)<<16);
-                MemoryUtil.memPutInt(upload + (((x<<4)|(15-y))*4), sample|(0xFF<<28));//Skylight is inverted
-            }
-        }
+//        {
+//            long upload = UploadStream.INSTANCE.upload(this.lightDataBuffer, 0, 256*4);
+//            var lmt = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().texture.getImage();
+//            for (int light = 0; light < 256; light++) {
+//                int x = light&0xF;
+//                int y = ((light>>4)&0xF);
+//                int sample = lmt.getColor(x,y);
+//                sample = ((sample&0xFF0000)>>16)|(sample&0xFF00)|((sample&0xFF)<<16);
+//                MemoryUtil.memPutInt(upload + (((x<<4)|(15-y))*4), sample|(0xFF<<28));//Skylight is inverted
+//            }
+//        }
 
         //Upload any new geometry
         this.updatedSectionIds = this.geometry.uploadResults();
@@ -105,7 +100,7 @@ public abstract class AbstractFarWorldRenderer <T extends Viewport, J extends Ab
             //Do any BiomeChanges
             while (!this.biomeUpdates.isEmpty()) {
                 var update = this.biomeUpdates.pop();
-                var biomeReg = MinecraftClient.getInstance().world.getRegistryManager().get(RegistryKeys.BIOME);
+                var biomeReg = MinecraftClient.getInstance().world.getRegistryManager().getOrThrow(RegistryKeys.BIOME);
                 this.models.addBiome(update.id, biomeReg.get(Identifier.of(update.biome)));
                 didHaveBiomeChange = true;
             }
@@ -126,8 +121,9 @@ public abstract class AbstractFarWorldRenderer <T extends Viewport, J extends Ab
 
         //TODO: fix this in a better way than this ungodly hacky stuff, causes clouds to dissapear
         //RenderSystem.setShaderFogColor(1f, 1f, 1f, 0f);
-        RenderSystem.setShaderFogEnd(99999999);
-        RenderSystem.setShaderFogStart(9999999);
+        //RenderSystem.setShaderFogEnd(99999999);
+        //RenderSystem.setShaderFogStart(9999999);
+        RenderSystem.setShaderFog(new Fog(9999999,99999999,SPHERE,1f,1f,1f,0f));
     }
 
     public abstract void renderFarAwayOpaque(T viewport);

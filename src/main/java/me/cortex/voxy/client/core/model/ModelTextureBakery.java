@@ -121,12 +121,12 @@ public class ModelTextureBakery {
         var oldProjection = new Matrix4f(RenderSystem.getProjectionMatrix());
         GL11C.glViewport(0, 0, this.width, this.height);
 
-        RenderSystem.setProjectionMatrix(new Matrix4f().identity().set(new float[]{
+        var projection = new Matrix4f().identity().set(new float[]{
                 2,0,0,0,
                 0, 2,0,0,
                 0,0, -1f,0,
                 -1,-1,0,1,
-        }), VertexSorter.BY_Z);
+        });
 
 
 
@@ -184,7 +184,7 @@ public class ModelTextureBakery {
         glDisable(GL_STENCIL_TEST);
         glDisable(GL_BLEND);
 
-        RenderSystem.setProjectionMatrix(oldProjection, VertexSorter.BY_DISTANCE);
+        //RenderSystem.setProjectionMatrix(oldProjection, VertexSorter.BY_DISTANCE);
         glBindFramebuffer(GL_FRAMEBUFFER, oldFB);
         GL11C.glViewport(GlStateManager.Viewport.getX(), GlStateManager.Viewport.getY(), GlStateManager.Viewport.getWidth(), GlStateManager.Viewport.getHeight());
 
